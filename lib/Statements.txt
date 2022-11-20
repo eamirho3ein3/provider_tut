@@ -118,32 +118,33 @@ class _State extends State<MyApp> {
   ];
 
   void _runFilter(String enteredKeyword) {
-    List results = [];
     if (enteredKeyword.isEmpty) {
-      results = myData;
+      results = BalanceModel.getData(myData);
+      setState(() {});
     } else {
-      results = myData
-          .where(
-            (user) => user["date"].toString().contains(
-                  enteredKeyword.toLowerCase(),
-                ),
-          )
-          .toList();
+      results = BalanceModel.getData(myData).where((data) {
+        return data.date.contains(
+          enteredKeyword.toLowerCase(),
+        );
+      }).toList();
+      setState(() {});
     }
   }
 
   // This list holds the data for the list view
   List _foundUsers = [];
+  List results = [];
   @override
   initState() {
     _foundUsers = myData;
+    results = BalanceModel.getData(myData);
+    print(results);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    var result = BalanceModel.getData(myData);
-    print(result.length);
+    print(results.length);
     return Scaffold(
       appBar: AppBar(
         title: Text('Name here'),
@@ -163,18 +164,18 @@ class _State extends State<MyApp> {
             child: ListView.builder(
               padding: const EdgeInsets.all(10),
               shrinkWrap: true,
-              itemCount: result.length,
+              itemCount: results.length,
               itemBuilder: (context, index) {
                 return Card(
                   child: ListTile(
                     leading: Text(
-                      'R - ${result[index].receipts.toString()}',
+                      'R - ${results[index].receipts.toString()}',
                     ),
                     title: Text(
-                      'M - ${result[index].date.toString()}',
+                      'M - ${results[index].date.toString()}',
                     ),
                     subtitle: Text(
-                      'O - ${result[index].opening.toString()}\nC - ${result[index].closing.toString()}',
+                      'O - ${results[index].opening.toString()}\nC - ${results[index].closing.toString()}',
                     ),
                   ),
                 );
