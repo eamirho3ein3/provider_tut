@@ -42,20 +42,40 @@ class BalanceModel {
     for (var month in months) {
       double openValue = 0;
       double closeValue = 0;
+      double electricityMeteredValue = 0;
+      double interestValue = 0;
+      double journalCreditValue = 0;
+      double receiptsValue = 0;
+      double totalValue = 0;
 
       var year = '';
 
-      for (var e in data) {
-        if (e['serviceDescription'] == "Opening Balance") {
-          var rawYear = e['financialYear'] as String;
-          year = rawYear.substring(0, rawYear.lastIndexOf('/'));
-          openValue =
-              e[month] is int ? double.parse(e[month].toString()) : e[month];
-        } else if (e['serviceDescription'] == "Closing Balance") {
-          closeValue =
-              e[month] is int ? double.parse(e[month].toString()) : e[month];
-        }
+     for (var e in data) {
+      if (e['serviceDescription'] == "Opening Balance") {
+        var rawYear = e['financialYear'] as String;
+        year = rawYear.substring(0, rawYear.lastIndexOf('/'));
+        openValue =
+            e[month] is int ? double.parse(e[month].toString()) : e[month];
+      } else if (e['serviceDescription'] == "Closing Balance") {
+        closeValue =
+            e[month] is int ? double.parse(e[month].toString()) : e[month];
+      } else if (e['serviceDescription'] == "Electricity Metered") {
+        electricityMeteredValue =
+            e[month] is int ? double.parse(e[month].toString()) : e[month];
+      } else if (e['serviceDescription'] == "Interest") {
+        interestValue =
+            e[month] is int ? double.parse(e[month].toString()) : e[month];
+      } else if (e['serviceDescription'] == "Journal Credit") {
+        journalCreditValue =
+            e[month] is int ? double.parse(e[month].toString()) : e[month];
+      } else if (e['serviceDescription'] == "Total") {
+        totalValue =
+            e[month] is int ? double.parse(e[month].toString()) : e[month];
+      } else if (e['serviceDescription'] == "Receipts") {
+        receiptsValue =
+            e[month] is int ? double.parse(e[month].toString()) : e[month];
       }
+    }
       result.add(
         BalanceModel(
           date: "$month $year",
